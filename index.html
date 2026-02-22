@@ -956,7 +956,7 @@
           <div class="section-label">Contact</div>
           <h2 class="section-title">Get in Touch</h2>
           <div class="section-rule"></div>
-          <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <form class="contact-form" id="contact-form">
             <input type="hidden" name="access_key" value="7796cccc-8085-4762-9007-6730c4be428b">
             <input type="hidden" name="subject" value="New Inquiry — Flask Law Contact Form">
             <input type="hidden" name="redirect" value="false">
@@ -1036,6 +1036,7 @@
         const json = await res.json();
         if (json.success) {
           document.getElementById('form-success').style.display = 'block';
+          btn.style.display = 'none';
           form.reset();
         } else {
           btn.disabled = false;
