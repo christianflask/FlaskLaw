@@ -956,7 +956,11 @@
           <div class="section-label">Contact</div>
           <h2 class="section-title">Get in Touch</h2>
           <div class="section-rule"></div>
-          <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)">
+          <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="7796cccc-8085-4762-9007-6730c4be428b">
+            <input type="hidden" name="subject" value="New Inquiry — Flask Law Contact Form">
+            <input type="hidden" name="redirect" value="false">
+
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" placeholder="Your name" required>
 
@@ -1018,13 +1022,34 @@
       });
     });
 
-    // Simple form handler
-    function handleSubmit(e) {
+    // Web3Forms AJAX submission
+    const form = document.getElementById('contact-form');
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      document.getElementById('form-success').style.display = 'block';
-      e.target.querySelector('button[type="submit"]').disabled = true;
-      e.target.querySelector('button[type="submit"]').style.opacity = '0.5';
-    }
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      btn.textContent = 'Sending...';
+      const data = new FormData(form);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+        const json = await res.json();
+        if (json.success) {
+          document.getElementById('form-success').style.display = 'block';
+          form.reset();
+        } else {
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.textContent = 'Send Message';
+          alert('Something went wrong. Please email christian.flask@flasklaw.com directly.');
+        }
+      } catch(err) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = 'Send Message';
+        alert('Something went wrong. Please email christian.flask@flasklaw.com directly.');
+      }
+    });
   </script>
 
 </body>
